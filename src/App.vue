@@ -6,7 +6,7 @@
 
 <script>
 // 引入 StudentForm 组件
-import students from './components/students.vue';
+import StudentForm from './components/StudentForm.vue';
 
 export default {
   components: {
