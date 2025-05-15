@@ -22,3 +22,8 @@ npm run lint
 
 ### Customize configuration
 See [Configuration Reference](https://cli.vuejs.org/config/).
+
+
+this is for group's pythontask
+backend : dqx,lzq,sdy
+frontend : wqy,lys
