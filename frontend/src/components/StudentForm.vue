@@ -52,48 +52,57 @@
 </template>
 
 <script>
+import { useStore } from 'vuex';
+import { ref } from 'vue';
+
 export default {
-  data() {
-    return {
-      studentName: '',
-      leaveReason: '',
-      leaveDate: '',
-      returnDate: '',
-      dateError: false,
-      isSubmitting: false,
-      leaveRequests: []
-    };
-  },
-  methods: {
-    submitLeaveRequest() {
-      if (this.leaveDate > this.returnDate) {
-        this.dateError = true;
+  setup() {
+    const store = useStore();
+    const studentName = ref('');
+    const leaveReason = ref('');
+    const leaveDate = ref('');
+    const returnDate = ref('');
+    const dateError = ref(false);
+    const isSubmitting = ref(false);
+
+    const submitLeaveRequest = () => {
+      if (new Date(leaveDate.value) > new Date(returnDate.value)) {
+        dateError.value = true;
         return;
       }
 
-      this.dateError = false;
-      this.isSubmitting = true;
+      dateError.value = false;
+      isSubmitting.value = true;
 
       const newRequest = {
-        studentName: this.studentName,
-        leaveReason: this.leaveReason,
-        leaveDate: this.leaveDate,
-        returnDate: this.returnDate,
+        id: Date.now(), // 使用时间戳作为唯一标识符
+        studentName: studentName.value,
+        leaveReason: leaveReason.value,
+        leaveDate: leaveDate.value,
+        returnDate: returnDate.value,
         status: 'pending'
       };
 
-      this.leaveRequests.push(newRequest);
+      store.dispatch('addLeaveRequest', newRequest);
 
-      this.studentName = '';
-      this.leaveReason = '';
-      this.leaveDate = '';
-      this.returnDate = '';
+      studentName.value = '';
+      leaveReason.value = '';
+      leaveDate.value = '';
+      returnDate.value = '';
 
       alert('请假申请已提交！');
-      this.isSubmitting = false;
+      isSubmitting.value = false;
+    };
 
-      console.log('Mock 数据:', this.leaveRequests);
-    }
+    return {
+      studentName,
+      leaveReason,
+      leaveDate,
+      returnDate,
+      dateError,
+      isSubmitting,
+      submitLeaveRequest
+    };
   }
 };
 </script>
